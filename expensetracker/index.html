@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expensetracker</title>
+    <script src="react.development.js"></script>
+    <script src="react-dom.development.js"></script>
+    <script src="babel.min.js"></script>
+    <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+    <div id="root"></div>
+    <script src="bootstrap.bundle.min.js"></script>
+    <script type="text/babel">
+        const app = document.getElementById('root');
+        const root = ReactDOM.createRoot(app);
+
+        function ExpenseApp(){
+            const [expenses, setExpenses] = React.useState([]);
+            const [name, setName] = React.useState('');
+            const [amount, setAmount] = React.useState('');
+
+            const addExpense = () => {
+                if (name && amount) {
+                    setExpenses([...expenses, { name, amount: parseFloat(amount) }]);
+                    setName('');
+                    setAmount('');
+                }
+            };
+
+            const totalAmount = expenses.reduce((acc, expense) => acc + expense.amount, 0);
+
+            return (
+                <div className="container">
+                    <div className="card">
+                        <div className="card-header">
+                            <h3>Expenses</h3>
+                            </div>
+                            <div className="card-body">
+                                <input type="text" className="form-control mb-2" placeholder="Enter Expense" value={name} onChange={(e) => setName(e.target.value)}/>
+                                <input type="number" className="form-control mb-2" placeholder="Enter Amount" value={amount} onChange={(e) => setAmount(e.target.value)}/>
+                                <button className="btn btn-primary" onClick={addExpense}>Add</button>
+                                <h3 className="mt-3">Expense</h3>
+                                <ul className="list-group">
+                                    {expenses.map((expense, index) => (
+                                        <li className="list-group-item" key={index}>
+                                            {expense.name} - ${expense.amount.toFixed(2)}
+                                            </li>
+                                    ))}
+                                    </ul>
+
+                                    <h4 className="mt-3">Total: ${totalAmount.toFixed(2)}</h4>
+
+
+                                </div>
+                        </div>
+                    </div>
+            )
+        }
+
+        root.render(<ExpenseApp />);
+    </script>
+</body>
+</html>
